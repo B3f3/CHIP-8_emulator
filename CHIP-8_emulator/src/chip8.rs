@@ -80,59 +80,100 @@ impl Chip8{
         println!("Executing opcode: {:#06X}", opcode);
 
         match opcode & 0xF000 {
-            0x00E0 => {
+            0x00E0 => {     //00E0 - CLS
 
             }
-            0x00EE =>{
+            0x00EE =>{      //00EE - RET
 
             }
-            0x1000 => {     //1nnn
-                let addr = opcode & 0x0FFF;
-                self.pc = addr;
-            }
-            0x2000 =>{      //2nnn
-                let addr = opcode & 0x0FFF;
+            0x1000 => self.pc = opcode & 0x0FFF,
+            0x2000 =>{      //2nnn - CALL addr
+                if self.sp as usize >= self.stack.len() {
+                    panic!("Stack overflow");
+                }
+                self.stack[self.sp as usize] = self.pc;
                 self.sp += 1;
-
                 self.pc = addr;
             }
-            0x3000 => {     //3xkk
+            0x3000 => {     //3xkk - SE Vx, byte
                 let x = ((opcode & 0x0F00) >> 8) as usize;
                 let byte = (opcode & 0x00FF) as u8;
                 if self.v[x] == byte {self.pc += 2;}
             }
-            0x4000 => {     //4xkk
+            0x4000 => {     //4xkk - SNE Vx, byte
                 let x = ((opcode & 0x0F00) >> 8) as usize;
                 let byte = (opcode & 0x00FF) as u8;
                 if self.v[x] != byte {self.pc += 2;}
             }
-            0x5000 => {     //5vy0
+            0x5000 => {     //5xy0 - SE Vx, Vy
                 let x = ((opcode & 0x0F00) >> 8) as usize;
                 let y = ((opcode & 0x00F0) >> 8) as usize;
                 if self.v[x] != self.v[y] {self.pc += 2;}
             }
-            0x6000 => {     //6xkk
+            0x6000 => {     //6xkk - LD Vx, byte
                 let x = ((opcode & 0x0F00) >> 8) as usize;
                 let byte = (opcode & 0x00FF) as u8;
                 self.v[x] = byte;
                 self.pc += 2;
             }
-            0x7000 => {     //7xkk
-                
+            0x7000 => {     //7xkk - ADD Vx, byte
+                let x = ((opcode & 0x0F00) >> 8) as usize;
+                let byte = (opcode & 0x00FF) as u8;
+                self.v[x] += byte
             }
-            0x8000 => {
-                
+            0x8000 => {     //8xy0 - LD Vx, Vy
+                let x = ((opcode & 0x0F00) >> 8) as usize;
+                let y = ((opcode & 0x00F0) >> 8) as usize;
+                self.v[x] = self.v[y];
             }
-            0x9000 => {
-                
+            0x8001 => {     //8xy1 - OR Vx, Vy
+                let x = ((opcode & 0x0F00) >> 8) as usize;
+                let y = ((opcode & 0x00F0) >> 8) as usize;
+                self.v[x] = (self.v[y] | self.v[x]);
             }
-            0xA000 => {
+            0x8002 => {     //8xy2 - AND Vx, Vy
+                let x = ((opcode & 0x0F00) >> 8) as usize;
+                let y = ((opcode & 0x00F0) >> 8) as usize;
+                self.v[x] = (self.v[y] | self.v[x]);
+            }
+            0x8003 => {     //8xy3 - XOR Vx, Vy
+                let x = ((opcode & 0x0F00) >> 8) as usize;
+                let y = ((opcode & 0x00F0) >> 8) as usize;
+                self.v[x] = (self.v[y] ^ self.v[x]);
+            }
+            0x8004 => {     //8xy4 - ADD Vx, Vy
+                let x = ((opcode & 0x0F00) >> 8) as usize;
+                let y = ((opcode & 0x00F0) >> 4) as usize;
+                if(self.v[y]> (0xFF - self.v[x])){
+                    self.v[0xF] = 1; //carry 
+                } else {
+                    self.v[0xF] = 0; 
+                }
+                self.v[x] += self.v[y];
+            }
+            0x8005 => {     //8xy5 - SUB Vx, Vy
+                let x = ((opcode & 0x0F00) >> 8) as usize;
+                let y = ((opcode & 0x00F0) >> 4) as usize;
+                if (self.v[x] > self.v[y]){
+                    self.v[0xF] = 1;
+                } else {
+                    self.v[0xF] = 0; 
+                }
+                self.v[x] -= self.v[y]
+            }
+            0x9000 => {     //9xy0 - SNE Vx, Vy
+                let x = ((opcode & 0x0F00) >> 8) as usize;
+                let y = ((opcode & 0x00F0) >> 4) as usize;
+                if self.v[x] != self.v[y] {self.pc += 2;}
+            }
+            0xA000 => {     //Annn - LD I, addr
                 let addr = opcode & 0x0FFF;
                 self.i = addr;
                 self.pc += 2;
             }
-            0xB000 => {
-                
+            0xB000 => {     //Bnnn - JP V0, addr
+                let addr = opcode & 0x0FFF;
+                self.pc = addr + self.v[0];
             }
             0xC000 => {
                 
