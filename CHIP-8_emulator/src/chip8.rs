@@ -86,28 +86,66 @@ impl Chip8{
             0x00EE =>{
 
             }
-            0x1000 => {
+            0x1000 => {     //1nnn
                 let addr = opcode & 0x0FFF;
                 self.pc = addr;
             }
-            0x2000 =>{
+            0x2000 =>{      //2nnn
                 let addr = opcode & 0x0FFF;
                 self.sp += 1;
-                self.stack[self.sp] == self.pc;
+
                 self.pc = addr;
             }
-            0x6000 => {
+            0x3000 => {     //3xkk
+                let x = ((opcode & 0x0F00) >> 8) as usize;
+                let byte = (opcode & 0x00FF) as u8;
+                if self.v[x] == byte {self.pc += 2;}
+            }
+            0x4000 => {     //4xkk
+                let x = ((opcode & 0x0F00) >> 8) as usize;
+                let byte = (opcode & 0x00FF) as u8;
+                if self.v[x] != byte {self.pc += 2;}
+            }
+            0x5000 => {     //5vy0
+                let x = ((opcode & 0x0F00) >> 8) as usize;
+                let y = ((opcode & 0x00F0) >> 8) as usize;
+                if self.v[x] != self.v[y] {self.pc += 2;}
+            }
+            0x6000 => {     //6xkk
                 let x = ((opcode & 0x0F00) >> 8) as usize;
                 let byte = (opcode & 0x00FF) as u8;
                 self.v[x] = byte;
                 self.pc += 2;
+            }
+            0x7000 => {     //7xkk
+                
+            }
+            0x8000 => {
+                
+            }
+            0x9000 => {
+                
             }
             0xA000 => {
                 let addr = opcode & 0x0FFF;
                 self.i = addr;
                 self.pc += 2;
             }
-
+            0xB000 => {
+                
+            }
+            0xC000 => {
+                
+            }
+            0xD000 => {
+                
+            }
+            0xE000 => {
+                
+            }
+            0xF000 => {
+                
+            }
             _ => {
                 println!("Unknown opcode: {:#06X}", opcode);
                 self.pc += 2;
