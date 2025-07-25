@@ -1,1 +1,1 @@
-/Users/bercanturkmen/Documents/GitHub/CHIP-8_emulator/CHIP-8_emulator/target/debug/CHIP-8_emulator: /Users/bercanturkmen/Documents/GitHub/CHIP-8_emulator/CHIP-8_emulator/src/chip8.rs /Users/bercanturkmen/Documents/GitHub/CHIP-8_emulator/CHIP-8_emulator/src/main.rs
+C:\Users\berca\Documents\GitHub\CHIP-8_emulator\CHIP-8_emulator\target\debug\CHIP-8_emulator.exe: C:\Users\berca\Documents\GitHub\CHIP-8_emulator\CHIP-8_emulator\src\chip8.rs C:\Users\berca\Documents\GitHub\CHIP-8_emulator\CHIP-8_emulator\src\main.rs

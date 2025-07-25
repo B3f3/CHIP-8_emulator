@@ -1,0 +1,12 @@
+C:\Users\berca\Documents\GitHub\CHIP-8_emulator\CHIP-8_emulator\target\debug\deps\minifb-4df57404b4539ee4.d: C:\Users\berca\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\minifb-0.28.0\src\lib.rs C:\Users\berca\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\minifb-0.28.0\src\error.rs C:\Users\berca\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\minifb-0.28.0\src\icon.rs C:\Users\berca\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\minifb-0.28.0\src\key.rs C:\Users\berca\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\minifb-0.28.0\src\key_handler.rs C:\Users\berca\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\minifb-0.28.0\src\os\mod.rs C:\Users\berca\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\minifb-0.28.0\src\os\windows\mod.rs C:\Users\berca\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\minifb-0.28.0\src\rate.rs
+
+C:\Users\berca\Documents\GitHub\CHIP-8_emulator\CHIP-8_emulator\target\debug\deps\libminifb-4df57404b4539ee4.rmeta: C:\Users\berca\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\minifb-0.28.0\src\lib.rs C:\Users\berca\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\minifb-0.28.0\src\error.rs C:\Users\berca\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\minifb-0.28.0\src\icon.rs C:\Users\berca\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\minifb-0.28.0\src\key.rs C:\Users\berca\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\minifb-0.28.0\src\key_handler.rs C:\Users\berca\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\minifb-0.28.0\src\os\mod.rs C:\Users\berca\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\minifb-0.28.0\src\os\windows\mod.rs C:\Users\berca\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\minifb-0.28.0\src\rate.rs
+
+C:\Users\berca\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\minifb-0.28.0\src\lib.rs:
+C:\Users\berca\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\minifb-0.28.0\src\error.rs:
+C:\Users\berca\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\minifb-0.28.0\src\icon.rs:
+C:\Users\berca\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\minifb-0.28.0\src\key.rs:
+C:\Users\berca\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\minifb-0.28.0\src\key_handler.rs:
+C:\Users\berca\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\minifb-0.28.0\src\os\mod.rs:
+C:\Users\berca\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\minifb-0.28.0\src\os\windows\mod.rs:
+C:\Users\berca\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\minifb-0.28.0\src\rate.rs:
