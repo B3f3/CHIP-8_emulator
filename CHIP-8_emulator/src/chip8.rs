@@ -158,7 +158,6 @@ impl Chip8{
         self.pc += 2;
     }
 
-    /// Returns the first pressed key (0x0-0xF) if any, or None
     fn get_pressed_key(&self) -> Option<usize> {
         self.keypad.iter()
             .enumerate()
@@ -187,7 +186,7 @@ impl Chip8{
                 0x00EE => self.op_00ee(),
                 _ => self.pc += 2, // SYS addr - ignore
             }
-            0x1000 => self.pc = opcode & 0x0FFF,
+            0x1000 => {self.pc = opcode & 0x0FFF;},
             0x2000 => self.op_2nnn(opcode & 0x0FFF),
             0x3000 => {     //3xkk - SE Vx, byte    
                 let x = ((opcode & 0x0F00) >> 8) as usize;
@@ -203,7 +202,7 @@ impl Chip8{
             }
             0x5000 => {     //5xy0 - SE Vx, Vy  
                 let x = ((opcode & 0x0F00) >> 8) as usize;
-                let y = ((opcode & 0x00F0) >> 8) as usize;
+                let y = ((opcode & 0x00F0) >> 4) as usize;
                 if self.v[x] != self.v[y] {self.pc += 2;}
                 self.pc += 2;
             }
@@ -216,37 +215,37 @@ impl Chip8{
             0x7000 => {     //7xkk - ADD Vx, byte   
                 let x = ((opcode & 0x0F00) >> 8) as usize;
                 let byte = (opcode & 0x00FF) as u8;
-                self.v[x] += byte;
+                self.v[x] = self.v[x].wrapping_add(byte);
                 self.pc += 2;
             }
             0x8000 => match opcode & 0xF00F {       //800F cases    
                 0x8000 => {     //8xy0 - LD Vx, Vy  
                     let x = ((opcode & 0x0F00) >> 8) as usize;
-                    let y = ((opcode & 0x00F0) >> 8) as usize;
+                    let y = ((opcode & 0x00F0) >> 4) as usize;
                     self.v[x] = self.v[y];
                     self.pc += 2;
                 }
                 0x8001 => {     //8xy1 - OR Vx, Vy  
                     let x = ((opcode & 0x0F00) >> 8) as usize;
-                    let y = ((opcode & 0x00F0) >> 8) as usize;
+                    let y = ((opcode & 0x00F0) >> 4) as usize;
                     self.v[x] |= self.v[y];
                     self.pc += 2;
                 }
                 0x8002 => {     //8xy2 - AND Vx, Vy 
                     let x = ((opcode & 0x0F00) >> 8) as usize;
-                    let y = ((opcode & 0x00F0) >> 8) as usize;
+                    let y = ((opcode & 0x00F0) >> 4) as usize;
                     self.v[x] &= self.v[y];
                     self.pc += 2;
                 }
                 0x8003 => {     //8xy3 - XOR Vx, Vy 
                     let x = ((opcode & 0x0F00) >> 8) as usize;
-                    let y = ((opcode & 0x00F0) >> 8) as usize;
+                    let y = ((opcode & 0x00F0) >> 4) as usize;
                     self.v[x] ^= self.v[y];
                     self.pc += 2;
                 }
                 0x8004 => {     //8xy4 - ADD Vx, Vy 
                     let x = ((opcode & 0x0F00) >> 8) as usize;
-                    let y = ((opcode & 0x00F0) >> 8) as usize;
+                    let y = ((opcode & 0x00F0) >> 4) as usize;
                     let sum = (self.v[x] as u16) + (self.v[y] as u16);
                     self.v[0xF] = if sum > 0xFF { 1 } else { 0 };
                     self.v[x] = sum as u8;
@@ -254,7 +253,7 @@ impl Chip8{
                 }
                 0x8005 => {     //8xy5 - SUB Vx, Vy 
                     let x = ((opcode & 0x0F00) >> 8) as usize;
-                    let y = ((opcode & 0x00F0) >> 8) as usize;
+                    let y = ((opcode & 0x00F0) >> 4) as usize;
                     self.v[0xF] = if self.v[x] >= self.v[y] { 1 } else { 0 };
                     self.v[x] = self.v[x].wrapping_sub(self.v[y]);
                     self.pc += 2;
@@ -267,7 +266,7 @@ impl Chip8{
                 }
                 0x8007 => {     //8xy7 - SUBN Vx, Vy    
                     let x = ((opcode & 0x0F00) >> 8) as usize;
-                    let y = ((opcode & 0x00F0) >> 8) as usize;
+                    let y = ((opcode & 0x00F0) >> 4) as usize;
                     self.v[0xF] = if self.v[y] >= self.v[x] { 1 } else { 0 };
                     self.v[x] = self.v[y].wrapping_sub(self.v[x]);
                     self.pc += 2;
@@ -282,7 +281,7 @@ impl Chip8{
             }
             0x9000 => {     //9xy0 - SNE Vx, Vy
                 let x = ((opcode & 0x0F00) >> 8) as usize;
-                let y = ((opcode & 0x00F0) >> 8) as usize;
+                let y = ((opcode & 0x00F0) >> 4) as usize;
                 if self.v[x] != self.v[y] {self.pc += 2;}
                 self.pc += 2;
             }
@@ -305,7 +304,7 @@ impl Chip8{
             }
             0xD000 => {     //Dxyn - DRW Vx, Vy, nibble
                 let x = ((opcode & 0x0F00) >> 8) as usize;
-                let y = ((opcode & 0x00F0) >> 8) as usize;
+                let y = ((opcode & 0x00F0) >> 4) as usize;
                 let n = (opcode & 0x000F) as u8;
                 self.op_dxyn(x, y, n);
             }
@@ -314,17 +313,19 @@ impl Chip8{
                     let x = ((opcode & 0x0F00) >> 8) as usize;
                     let key = self.v[x] as usize;
                     if key < 16 && self.keypad[key] {
+                        self.pc += 4;
+                    } else {
                         self.pc += 2;
                     }
-                    self.pc += 2; 
                 }
                 0xE0A1 => {     //ExA1 - SKNP Vx
                     let x = ((opcode & 0x0F00) >> 8) as usize;
                     let key = self.v[x] as usize;
                     if key >= 16 || !self.keypad[key] {
-                        self.pc += 2; 
+                        self.pc += 4;
+                    } else {
+                        self.pc += 2;
                     }
-                    self.pc += 2; 
                 }
                 _ => ()
             }
@@ -335,16 +336,14 @@ impl Chip8{
                     self.pc += 2;
                 }
                 0xF00A =>{      //Fx0A - LD Vx, K
-                        let x = ((opcode & 0x0F00) >> 8) as usize;
-                        if let Some(key) = self.get_pressed_key() {
-                            // Key was pressed - store it and advance
-                            self.v[x] = key as u8;
-                            self.pc += 2;
-                        } else {
-                            // No key pressed - stay on this opcode (don't increment PC)
-                            // This effectively pauses execution until a key is pressed
-                            return;
-                        }
+                    let x = ((opcode & 0x0F00) >> 8) as usize;
+                    if let Some(key) = self.get_pressed_key() {
+                        self.v[x] = key as u8;
+                        self.pc += 2;
+                    } else {
+                        // Do not advance PC — this pauses execution on this instruction
+                        return;
+                    }
                 }
                 0xF015 =>{      //Fx15 - LD DT, Vx
                     let x = ((opcode & 0x0F00) >> 8) as usize;
